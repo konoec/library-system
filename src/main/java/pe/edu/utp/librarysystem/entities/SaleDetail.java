@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SalesDetail {
+public class SaleDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "salesId")
-    private Sales sales;
+    @JoinColumn(name = "saleId")
+    private Sale sale;
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;

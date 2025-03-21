@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Credentials {
+public class Credential {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 45, nullable = false, unique=true)
     private String username;
-    @Column(length = 45, nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
     @Column(length = 200,nullable = false)
     private String role;

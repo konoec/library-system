@@ -1,0 +1,66 @@
+<aside id="sidebar" th:fragment="common-dashboard">
+    <div class="d-flex">
+        <button class="toggle-btn" type="button">
+            <i class="lni lni-dashboard"></i>
+        </button>
+        <div class="sidebar-logo">
+            <a href="#">Tablero</a>
+        </div>
+    </div>
+    <ul class="sidebar-nav">
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+               data-bs-target="#management" aria-expanded="false" aria-controls="management">
+                <i class="lni lni-control-panel"></i>
+                <span>Administración</span>
+            </a>
+            <ul id="management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="/employee" class="sidebar-link">Empleado</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/credential" class="sidebar-link">Usuario</a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-item">
+            <a href="/client" class="sidebar-link">
+                <i class="lni lni-user"></i>
+                <span>Cliente</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+               data-bs-target="#catalog" aria-expanded="false" aria-controls="catalog">
+                <i class="lni lni-layers"></i>
+                <span>Catálogo</span>
+            </a>
+            <ul id="catalog" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="/product" class="sidebar-link">Producto</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/category" class="sidebar-link">Categoría</a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-item">
+            <a href="/sale" class="sidebar-link">
+                <i class="lni lni-delivery"></i>
+                <span>Ventas</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="/quote" class="sidebar-link">
+                <i class="lni lni-target-revenue"></i>
+                <span>Cotizaciones</span>
+            </a>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <a href="/logout" class="sidebar-link">
+            <i class="lni lni-exit"></i>
+            <span>Salir</span>
+        </a>
+    </div>
+</aside>

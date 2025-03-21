@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Incluir head común -->
+<head th:replace="common/head.html :: common-head"></head>
+<body>
+<div class="wrapper d-flex">
+    <!-- Incluir dashboard -->
+    <aside th:replace="common/dashboard.html :: common-dashboard"></aside>
+
+    <div class="main p-3">
+        <div class="content">
+            <div class="container mt-4">
+                <h2>Detalles de la Venta</h2>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Venta ID: <span th:text="${sale.id}"></span></h5>
+                        <p class="card-text"><strong>Cliente:</strong> <span th:text="${sale.client.fullName}"></span></p>
+                        <p class="card-text"><strong>Empleado:</strong> <span th:text="${sale.employee.fullName}"></span></p>
+                        <p class="card-text"><strong>Fecha de Venta:</strong> <span th:text="${#dates.format(sale.saleDate, 'dd/MM/yyyy')}"></span></p>
+                        <p class="card-text"><strong>Total de la Venta:</strong> <span th:text="${sale.totalSale}"></span></p>
+
+                        <h5 class="mt-4">Detalles de la Venta</h5>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="detail : ${sale.saleDetails}">
+                                <td th:text="${detail.product.name}"></td>
+                                <td th:text="${detail.amount}"></td>
+                                <td th:text="${detail.unitPrice}"></td>
+                                <td th:text="${detail.unitPrice.multiply(detail.amount)}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <a href="/sale" class="btn btn-primary">Regresar a la Lista de Ventas</a>
+                        <a th:href="@{/sale/generateReport/{id}(id=${sale.id})}" class="btn btn-secondary">Generar Reporte PDF</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+

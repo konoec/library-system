@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Incluir head común -->
+<head th:replace="common/head.html :: common-head"></head>
 <body>
-$END$
+<div class="wrapper d-flex">
+    <!-- Incluir dashboard -->
+    <aside th:replace="common/dashboard.html :: common-dashboard"></aside>
+
+    <div class="main p-3">
+        <div class="content">
+            <div class="container mt-4">
+                <h2>Formulario para crear un nuevo Producto</h2>
+                <form th:object="${product}" th:action="${action}" method="post" class="row mt-3">
+                    <div class="col-6 mb-3">
+                        <label for="name" class="form-label">Nombre del producto:</label>
+                        <input type="text" class="form-control" id="name" placeholder="Ingresa el nombre" th:field="*{name}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="description" class="form-label">Descripción:</label>
+                        <input type="text" class="form-control" id="description" placeholder="Ingresa la descripción" th:field="*{description}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="unitPrice" class="form-label">Precio Unitario:</label>
+                        <input type="text" class="form-control" id="unitPrice" placeholder="Ingresa el precio por unidad" th:field="*{unitPrice}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="stock" class="form-label">Stock:</label>
+                        <input type="text" class="form-control" id="stock" placeholder="Ingresa el stock" th:field="*{stock}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="category" class="form-label">Categoría:</label>
+                        <select class="form-select" id="category" th:field="*{category.id}">
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Bootstrap JS Bundle (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

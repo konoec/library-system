@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Incluir head común -->
+<head th:replace="common/head.html :: common-head"></head>
+<body>
+<div class="wrapper d-flex">
+    <!-- Incluir dashboard -->
+    <aside th:replace="common/dashboard.html :: common-dashboard"></aside>
+
+    <div class="main p-3">
+        <div class="content">
+            <div class="container mt-4">
+                <h2>Detalles de la Cotización</h2>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cotización ID: <span th:text="${quote.id}"></span></h5>
+                        <p class="card-text"><strong>Cliente:</strong> <span th:text="${quote.client.fullName}"></span></p>
+                        <p class="card-text"><strong>Empleado:</strong> <span th:text="${quote.employee.fullName}"></span></p>
+                        <p class="card-text"><strong>Fecha de Cotización:</strong> <span th:text="${#dates.format(quote.quoteDate, 'dd/MM/yyyy')}"></span></p>
+                        <p class="card-text"><strong>Total de la Cotización:</strong> <span th:text="${#numbers.formatCurrency(quote.totalQuote)}"></span></p>
+
+                        <h5 class="mt-4">Detalles de la Cotización</h5>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="detail : ${quote.quoteDetails}">
+                                <td th:text="${detail.product.name}"></td>
+                                <td th:text="${detail.quantity}"></td>
+                                <td th:text="${#numbers.formatCurrency(detail.unitPrice)}"></td>
+                                <td th:text="${#numbers.formatCurrency(detail.unitPrice.multiply(detail.quantity))}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <a href="/quote" class="btn btn-primary">Regresar a la Lista de Cotizaciones</a>
+                        <a th:href="@{/quote/generateReport/{id}(id=${quote.id})}" class="btn btn-secondary">Descargar Reporte</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!-- Incluir head común -->
+    <head th:replace="common/head.html :: common-head"></head>
+    <body>
+        <div class="wrapper d-flex">
+            <!-- Incluir dashboard -->
+            <aside th:replace="common/dashboard.html :: common-dashboard"></aside>
+
+            <!-- Contenido de la página -->
+            <div class="main p-3">
+                <div id="content">
+                    <div class="container mt-4">
+                        <h2>Formulario para crear un nuevo Empleado</h2>
+                        <form th:object="${employee}" th:action="${action}" method="post" class="row mt-3">
+                            <div class="col-6 mb-3">
+                                <label for="fullName" class="form-label">Nombre completo:</label>
+                                <input type="text" class="form-control" id="fullName" placeholder="Ingresa el nombre completo" th:field="*{fullName}">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="email" placeholder="Ingresa el correo" th:field="*{email}">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="phoneNumber" class="form-label">Teléfono:</label>
+                                <input type="text" class="form-control" id="phoneNumber" placeholder="Ingresa el telefono" th:field="*{phoneNumber}">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="address" class="form-label">Dirección:</label>
+                                <input type="text" class="form-control" id="address" placeholder="Ingresa la dirección" th:field="*{address}">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="department" class="form-label">Departamento:</label>
+                                <input type="text" class="form-control" id="department" placeholder="Ingresa el departamento" th:field="*{department}">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="position" class="form-label">Posición:</label>
+                                <input type="text" class="form-control" id="position" placeholder="Ingresa la posición" th:field="*{position}">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts comunes -->
+        <script src="/js/script.js"></script>
+        <script src="/js/section.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

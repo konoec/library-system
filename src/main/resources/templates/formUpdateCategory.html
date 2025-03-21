@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Incluir head común -->
+<head th:replace="common/head.html :: common-head"></head>
+<body>
+<div class="wrapper d-flex">
+    <!-- Incluir dashboard -->
+    <aside th:replace="common/dashboard.html :: common-dashboard"></aside>
+
+    <div class="main p-3">
+        <div class="content">
+            <div class="container mt-4">
+                <h1>Editar Categoría</h1>
+
+                <form method="post" th:object="${category}" th:action="${action}" class="row row-cols-2 mt-3">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="col mb-3">
+                        <label for="name" class="form-label">Nombre:</label>
+                        <input type="text" th:field="*{name}" id="name" placeholder="Ingresa la categoría" class="form-control">
+                    </div>
+                    <div class="col mb-3">
+                        <label for="description" class="form-label">Descripción:</label>
+                        <input type="text" th:field="*{description}" id="description" placeholder="Ingresa la descripción" class="form-control">
+                    </div>
+                    <div class="col mb-2">
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                    </div>
+
+                </form>
+                <a href="/category">
+                    <button class="btn btn-danger">
+                        « Volver
+                    </button>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/script.js"></script>
+</body>
+</html>

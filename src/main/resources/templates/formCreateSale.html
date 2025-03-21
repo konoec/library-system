@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Incluir head común -->
+<head th:replace="common/head.html :: common-head"></head>
+<body>
+<div class="wrapper d-flex">
+    <!-- Incluir dashboard -->
+    <aside th:replace="common/dashboard.html :: common-dashboard"></aside>
+
+    <div class="main p-3">
+        <div class="content">
+            <div class="container mt-4">
+                <h2>Crear Venta</h2>
+                <form th:action="@{/sale/create}" th:object="${sale}" method="post" id="createSaleForm" class="row mt-3">
+                    <div class="col-6 mb-3 form-group">
+                        <label for="client" class="form-label">Cliente:</label>
+                        <select id="client" name="clientId" class="form-control" required>
+                            <option value="">Seleccionar cliente</option>
+                            <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.fullName}"></option>
+                        </select>
+                    </div>
+                    <div class="col-6 mb-3 form-group">
+                        <label for="employee" class="form-label">Empleado:</label>
+                        <select id="employee" name="employeeId" class="form-control" required>
+                            <option value="">Seleccionar empleado</option>
+                            <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.fullName}"></option>
+                        </select>
+                    </div>
+
+                    <h3 class="col-12">Detalles de Venta</h3>
+                        <div class="col-6 mb-3 form-group">
+                            <label for="product" class="form-label">Producto:</label>
+                            <select id="product" class="form-control">
+                                <option disabled selected value="">Seleccionar producto</option>
+                                <!-- Iterar sobre los productos disponibles -->
+                                <option th:each="product : ${products}" th:value="${product.id}"
+                                        th:data-price="${product.unitPrice}" th:data-stock="${product.stock}"
+                                        th:text="${product.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3 form-group">
+                            <label for="amount" class="form-label">Cantidad:</label>
+                            <input type="number" id="amount" class="form-control" min="1" value="1" required>
+                        </div>
+                        <div class="col-12 mb-3 form-group">
+                            <button type="button" class="btn btn-success" id="addProductBtn">Añadir Producto</button>
+                        </div>
+
+
+                    <!-- Tabla para mostrar productos añadidos -->
+                    <div class="col-12 table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID Producto</th>
+                                <th>Producto</th>
+                                <th>Precio Unitario</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody id="productTableBody">
+                            <!-- Aquí se añadirán las filas de productos añadidos dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Campo oculto para enviar los productIds -->
+                    <input type="hidden" id="productIds" name="productIds" />
+
+                    <!-- Campo oculto para enviar las cantidades -->
+                    <input type="hidden" id="amounts" name="amounts" />
+
+                    <!-- Campo para mostrar el total de la venta -->
+                    <div class="col-12 mb-3 form-group">
+                        <label for="totalSale" class="form-label">Total de la Venta:</label>
+                        <input type="text" id="totalSale" class="form-control" readonly />
+                    </div>
+
+                    <!-- Botón para guardar la venta -->
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Guardar Venta</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#addProductBtn').click(function () {
+                var productId = $('#product').val();
+                var productName = $('#product option:selected').text();
+                var productPrice = parseFloat($('#product option:selected').data('price'));
+                var productStock = parseInt($('#product option:selected').data('stock'));
+                var productAmount = parseInt($('#amount').val());
+
+                // Validar selección de producto
+                if (!productId) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Debe seleccionar un producto.',
+                    });
+                    return;
+                }
+
+                // Validar cantidad
+                if (productAmount > productStock) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Stock Insuficiente',
+                        text: 'No hay suficiente stock para el producto seleccionado.',
+                    });
+                    return;
+                }
+
+                // Validar duplicados
+                var productAlreadyAdded = false;
+                $('#productTableBody tr').each(function () {
+                    var productNameRow = $(this).find('td:eq(1)').text();
+                    if (productNameRow === productName) {
+                        productAlreadyAdded = true;
+                        return false; // Salir del bucle each
+                    }
+                });
+
+                if (productAlreadyAdded) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Producto Repetido',
+                        text: 'El producto seleccionado ya ha sido añadido.',
+                    });
+                    return;
+                }
+
+                // Crear fila de tabla con el producto seleccionado
+                var newRow = '<tr>' +
+                    '<td>' + productId + '</td>' +
+                    '<td>' + productName + '</td>' +
+                    '<td>' + productPrice.toFixed(2) + '</td>' +
+                    '<td>' + productAmount + '</td>' +
+                    '<td>' + (productPrice * productAmount).toFixed(2) + '</td>' +
+                    '<td><button type="button" class="btn btn-danger btn-sm removeProductBtn">Eliminar</button></td>' +
+                    '</tr>';
+
+                // Agregar la fila a la tabla
+                $('#productTableBody').append(newRow);
+
+                // Limpiar campos del formulario para próxima inserción
+                $('#product').val('');
+                $('#amount').val(1);
+
+                // Actualizar el total de la venta
+                updateTotal();
+                updateHiddenInputs();
+            });
+
+            // Función para manejar la eliminación de productos
+            $('#productTableBody').on('click', '.removeProductBtn', function () {
+                $(this).closest('tr').remove();
+                updateTotal();
+                updateHiddenInputs(); // Actualizar campos ocultos
+            });
+
+            // Función para actualizar los campos ocultos de productIds y amounts
+            function updateHiddenInputs() {
+                var productIds = [];
+                var amounts = [];
+
+                $('#productTableBody tr').each(function () {
+                    var productId = $(this).find('td:eq(0)').text(); // Obtener el productId
+                    var amount = $(this).find('td:eq(3)').text(); // Obtener la cantidad
+
+                    productIds.push(productId);
+                    amounts.push(amount);
+                });
+
+                $('#productIds').val(productIds.join(',')); // Actualizar el valor del campo productIds
+                $('#amounts').val(amounts.join(',')); // Actualizar el valor del campo amounts
+            }
+
+            // Función para actualizar el total de la venta
+            function updateTotal() {
+                var totalSale = 0;
+                $('#productTableBody tr').each(function () {
+                    var totalRow = parseFloat($(this).find('td:eq(4)').text()) || 0;
+                    totalSale += totalRow;
+                });
+                $('#totalSale').val(totalSale.toFixed(2));
+            }
+
+            // Validación al enviar el formulario
+            $('#createSaleForm').submit(function (event) {
+                if ($('#productTableBody tr').length === 0) {
+                    event.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Debe añadir al menos un producto antes de guardar la venta.',
+                    });
+                }
+            });
+        });
+    </script>
+<script src="/js/script.js"></script>
+</body>
+</html>
