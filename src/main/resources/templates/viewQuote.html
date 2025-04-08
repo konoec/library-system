@@ -18,7 +18,7 @@
                         <p class="card-text"><strong>Cliente:</strong> <span th:text="${quote.client.fullName}"></span></p>
                         <p class="card-text"><strong>Empleado:</strong> <span th:text="${quote.employee.fullName}"></span></p>
                         <p class="card-text"><strong>Fecha de Cotización:</strong> <span th:text="${#dates.format(quote.quoteDate, 'dd/MM/yyyy')}"></span></p>
-                        <p class="card-text"><strong>Total de la Cotización:</strong> <span th:text="${#numbers.formatCurrency(quote.totalQuote)}"></span></p>
+                        <p class="card-text"><strong>Total de la Cotización:</strong> <span th:text="${quote.totalQuote}"></span></p>
 
                         <h5 class="mt-4">Detalles de la Cotización</h5>
                         <table class="table table-striped">
@@ -34,8 +34,8 @@
                             <tr th:each="detail : ${quote.quoteDetails}">
                                 <td th:text="${detail.product.name}"></td>
                                 <td th:text="${detail.quantity}"></td>
-                                <td th:text="${#numbers.formatCurrency(detail.unitPrice)}"></td>
-                                <td th:text="${#numbers.formatCurrency(detail.unitPrice.multiply(detail.quantity))}"></td>
+                                <td th:text="${detail.unitPrice}"></td>
+                                <td th:text="${detail.unitPrice.multiply(detail.quantity)}"></td>
                             </tr>
                             </tbody>
                         </table>

@@ -11,5 +11,4 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByFullNameContainingIgnoreCaseAndActiveTrue(String fullName);
     List<Employee> findByActiveTrue();
-
 }
